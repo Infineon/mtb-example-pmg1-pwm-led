@@ -7,7 +7,7 @@
 * Related Document: See README.md
 *
 *******************************************************************************
-* Copyright 2022, Cypress Semiconductor Corporation (an Infineon company) or
+* Copyright 2022-2023, Cypress Semiconductor Corporation (an Infineon company) or
 * an affiliate of Cypress Semiconductor Corporation.  All rights reserved.
 *
 * This software, including source code, documentation and related
@@ -45,7 +45,8 @@
  ******************************************************************************/
 #include "cy_pdl.h"
 #include "cybsp.h"
-
+#include <stdio.h>
+#include <inttypes.h>
 
 /*******************************************************************************
 * Macros
@@ -59,6 +60,47 @@
 
 /* PWM Compare value is calculated based on the required duty cycle */
 #define PWM_COMPARE        (uint16_t)(PWM_PERIOD * PWM_DUTY_CYCLE / 100)
+
+/* CY ASSERT failure */
+#define CY_ASSERT_FAILED   (0u)
+
+/* Debug print macro to enable UART print */
+#define DEBUG_PRINT        (0u)
+
+#if DEBUG_PRINT
+/* Structure for UART context */
+cy_stc_scb_uart_context_t CYBSP_UART_context;
+/* Variable used for tracking the print status */
+volatile bool ENTER_LOOP = true;
+
+/*******************************************************************************
+* Function Name: check_status
+********************************************************************************
+* Summary:
+*  Prints the error message.
+*
+* Parameters:
+*  error_msg - message to print if any error encountered.
+*  status - status obtained after evaluation.
+*
+* Return:
+*  void
+*
+*******************************************************************************/
+void check_status(char *message, cy_rslt_t status)
+{
+    char error_msg[50];
+
+    sprintf(error_msg, "Error Code: 0x%08" PRIX32 "\n", status);
+
+    Cy_SCB_UART_PutString(CYBSP_UART_HW, "\r\n=====================================================\r\n");
+    Cy_SCB_UART_PutString(CYBSP_UART_HW, "\nFAIL: ");
+    Cy_SCB_UART_PutString(CYBSP_UART_HW, message);
+    Cy_SCB_UART_PutString(CYBSP_UART_HW, "\r\n");
+    Cy_SCB_UART_PutString(CYBSP_UART_HW, error_msg);
+    Cy_SCB_UART_PutString(CYBSP_UART_HW, "\r\n=====================================================\r\n");
+}
+#endif
 
 /*******************************************************************************
 * Function Name: main
@@ -79,22 +121,41 @@
 int main(void)
 {
     cy_rslt_t result;
+    cy_en_tcpwm_status_t pwm_result;
 
     /* Initialize the device and board peripherals */
     result = cybsp_init() ;
     if (result != CY_RSLT_SUCCESS)
     {
-        CY_ASSERT(0);
+        CY_ASSERT(CY_ASSERT_FAILED);
     }
+
+#if DEBUG_PRINT
+
+    /* Configure and enable the UART peripheral */
+    Cy_SCB_UART_Init(CYBSP_UART_HW, &CYBSP_UART_config, &CYBSP_UART_context);
+    Cy_SCB_UART_Enable(CYBSP_UART_HW);
+
+    /* Sequence to clear screen */
+    Cy_SCB_UART_PutString(CYBSP_UART_HW, "\x1b[2J\x1b[;H");
+
+    /* Print "PWM LED" */
+    Cy_SCB_UART_PutString(CYBSP_UART_HW, "****************** ");
+    Cy_SCB_UART_PutString(CYBSP_UART_HW, "PMG1 MCU: PWM LED");
+    Cy_SCB_UART_PutString(CYBSP_UART_HW, "****************** \r\n\n");
+#endif
 
     /* Enable global interrupts */
     __enable_irq();
 
     /* Initialize PWM using the configuration structure generated using device configurator */
-    if (CY_TCPWM_SUCCESS != Cy_TCPWM_PWM_Init(CYBSP_PWM_HW, CYBSP_PWM_NUM, &CYBSP_PWM_config))
+    pwm_result = Cy_TCPWM_PWM_Init(CYBSP_PWM_HW, CYBSP_PWM_NUM, &CYBSP_PWM_config);
+    if (pwm_result != CY_TCPWM_SUCCESS)
     {
-        /* Error handling */
-        CY_ASSERT(0);
+#if DEBUG_PRINT
+        check_status("API Cy_TCPWM_Init failed with error code",pwm_result);
+#endif
+        CY_ASSERT(CY_ASSERT_FAILED);
     }
 
     /* Set PWM Period count value*/
@@ -114,7 +175,13 @@ int main(void)
 
     for (;;)
     {
-
+#if DEBUG_PRINT
+        if (ENTER_LOOP)
+        {
+            Cy_SCB_UART_PutString(CYBSP_UART_HW, "Entered for loop\r\n");
+            ENTER_LOOP = false;
+        }
+#endif
     }
 }
 /* [] END OF FILE */

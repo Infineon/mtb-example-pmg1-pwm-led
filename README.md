@@ -4,8 +4,7 @@ This code example demonstrates the usage of the TCPWM block in EZ-PD&trade; PMG1
 
 [View this README on GitHub.](https://github.com/Infineon/mtb-example-pmg1-pwm-led)
 
-[Provide feedback on this code example.](https://cypress.co1.qualtrics.com/jfe/form/SV_1NTns53sK2yiljn?Q_EED=eyJVbmlxdWUgRG9jIElkIjoiQ0UyMzM2NjciLCJTcGVjIE51bWJlciI6IjAwMi0zMzY2NyIsIkRvYyBUaXRsZSI6IkVaLVBEJnRyYWRlOyBQTUcxIE1DVTogUFdNIExFRCIsInJpZCI6ImFiaHAiLCJEb2MgdmVyc2lvbiI6IjIuMS4wIiwiRG9jIExhbmd1YWdlIjoiRW5nbGlzaCIsIkRvYyBEaXZpc2lvbiI6Ik1DRCIsIkRvYyBCVSI6IldJUkVEIiwiRG9jIEZhbWlseSI6IlRZUEUtQyJ9)
-
+[Provide feedback on this code example.](https://cypress.co1.qualtrics.com/jfe/form/SV_1NTns53sK2yiljn?Q_EED=eyJVbmlxdWUgRG9jIElkIjoiQ0UyMzM2NjciLCJTcGVjIE51bWJlciI6IjAwMi0zMzY2NyIsIkRvYyBUaXRsZSI6IkVaLVBEJnRyYWRlOyBQTUcxIE1DVTogUFdNIExFRCIsInJpZCI6ImFiaHAiLCJEb2MgdmVyc2lvbiI6IjIuMi4wIiwiRG9jIExhbmd1YWdlIjoiRW5nbGlzaCIsIkRvYyBEaXZpc2lvbiI6Ik1DRCIsIkRvYyBCVSI6IldJUkVEIiwiRG9jIEZhbWlseSI6IlRZUEUtQyJ9)
 
 
 ## Requirements
@@ -31,7 +30,8 @@ This code example demonstrates the usage of the TCPWM block in EZ-PD&trade; PMG1
 - [EZ-PD&trade; PMG1-S2 Prototyping Kit](https://www.infineon.com/CY7112) (`PMG1-CY7112`)
 - [EZ-PD&trade; PMG1-S3 Prototyping Kit](https://www.infineon.com/CY7113) (`PMG1-CY7113`)
 - [EZ-PD&trade; PMG1-B1 Prototyping Kit](https://www.infineon.com/EVAL_PMG1_B1_DRP) (`EVAL_PMG1_B1_DRP`)
-
+- [EZ-PD&trade; PMG1-S1 DRP Prototyping Kit](https://www.infineon.com/EVAL_PMG1_S1_DRP) (`EVAL_PMG1_S1_DRP`)
+- [EZ-PD&trade; PMG1-S3 DRP Prototyping Kit](https://www.infineon.com/EVAL_PMG1_S3_DUALDRP) (`EVAL_PMG1_S3_DUALDRP`)
 
 
 
@@ -49,10 +49,12 @@ This code example demonstrates the usage of the TCPWM block in EZ-PD&trade; PMG1
     PMG1-CY7113         | J6.12 (P3.0) to J6.6 (LED3 IN) 
     PMG1-CY7113         | J6.12 (P3.0) to J6.6 (LED3 IN) 
     EVAL_PMG1_B1_DRP    | J7.8 (P2.1) to J6.7 (USER_STATUS_LED) 
+    EVAL_PMG1_S3_DUALDRP| J13.3 (P3.0) to J6.13 (USER_LED1)
+    EVAL_PMG1_S1_DRP    | J6.16 (P1.2) to J7.14 (USER_LED)
    
    <br>
 
-2. If UART DEBUG PRINT messages are enabled, UART connection are needed. Pin connections for UART is as shown in the following table. For the following revisions of the PMG1 prototyping kits, connect the UART Tx and UART Rx lines from the PMG1 kit to J3.8 and J3.10 on KitProg3 respectively to establish a UART connection between KitProg3 and the PMG1 device.
+2. If UART DEBUG PRINT messages are enabled, a UART connection is needed. Pin connections for UART are shown in the following table. For the following revisions of the PMG1 prototyping kits, connect the UART Tx and UART Rx lines from the PMG1 kit to J3.8 and J3.10 on KitProg3 respectively to establish a UART connection between KitProg3 and the PMG1 device.
 
    **Table 2. Pin connections for UART**
 
@@ -63,6 +65,8 @@ This code example demonstrates the usage of the TCPWM block in EZ-PD&trade; PMG1
     PMG1-CY7112 (revision 2 or lower) | J6.10 to J3.8 | J6.9 to J3.10 
     PMG1-CY7113 (revision 3 or lower) | J6.10 to J3.8 | J6.9 to J3.10 
     EVAL_PMG1_B1_DRP | SW5 to 1-2 position | SW4 to 1-2 position 
+    EVAL_PMG1_S3_DUALDRP | NA   | NA
+    EVAL_PMG1_S1_DRP | NA  | NA
    
    <br>
 
@@ -136,7 +140,6 @@ Argument | Description | Required/optional
 </details>
 
 
-
 ### Open the project
 
 After the project has been created, you can open it in your preferred development environment.
@@ -187,12 +190,11 @@ For more details, see the [ModusToolbox&trade; tools package user guide](https:/
 </details>
 
 
-
 ## Operation
 
-1. Ensure the steps listed in the [Hardware setup](#hardware-setup) section are completed.
+1. Complete the steps listed in the [Hardware setup](#hardware-setup) section.
 
-2. For PMG1-CY7110, PMG1-CY7111, PMG1-CY7112, and PMG1-CY7113 prototyping kits, ensure that the jumper shunt on the power selection jumper (J5) is placed at position 2-3 to enable programming mode. Skip this step for EVAL_PMG1_B1_DRP kit.
+2. For PMG1-CY7110, PMG1-CY7111, PMG1-CY7112, PMG1-CY7113 EVAL_PMG1_S1_DRP, and EVAL_PMG1_S3_DUALDRP prototyping kits, ensure that the jumper shunt on the power selection jumper (J5) is placed at position 2-3 to enable programming mode. prototyping kits and that the jumper shunt on the power selection jumper (J5) is placed at position 2-3 to enable programming mode. Skip this step for EVAL_PMG1_B1_DRP kit.
 
 3. Connect the board to your PC using the USB cable through the KitProg3 USB Type-C port (J1).
 
@@ -227,23 +229,25 @@ For more details, see the [ModusToolbox&trade; tools package user guide](https:/
 
 5. After programming the kit, disconnect the USB cable. 
 
-6. For PMG1-CY7110, PMG1-CY7111, PMG1-CY7112, and PMG1-CY7113 prototyping kits, change the position on the power selection jumper (J5) to 1-2 to power the kit through the USB PD port (J10). Skip this step for the EVAL_PMG1_B1_DRP kit. 
+6. For PMG1-CY7110, PMG1-CY7111, PMG1-CY7112, PMG1-CY7113, and EVAL_PMG1_S1_DRP prototyping kits, change the position on the power selection jumper (J5) to 1-2 to power the kit through the USB PD port (J10).For EVAL_PMG1_S3_DUALDRP prototyping kit change the position on the power selection jumper (J5) to 1-2 to power the kit through the USB PD ports (J10 and J14). Skip this step for the EVAL_PMG1_B1_DRP kit. 
 
-7. Connect the PMG1 USB PD sink port (J10) to the PC or a power adapter using a USB Type-C cable to power the PMG1-CY7110, PMG1-CY7111, PMG1-CY7112, and PMG1-CY7113 prototyping kits. Skip this step for the EVAL_PMG1_B1_DRP kit as it is automatically powered when the kit is connected through the KitProg3 USB Type-C port (J1).
+7. Connect the PMG1 USB PD sink port (J10) to the PC or a power adapter using a USB Type-C cable to power the PMG1-CY7110, PMG1-CY7111, PMG1-CY7112, PMG1-CY7113, EVAL_PMG1_S1_DRP, and EVAL_PMG1_S3_DUALDRP prototyping kits. Skip this step for EVAL_PMG1_B1_DRP as the kit is automatically powered when the it is connected through the KitProg3 USB Type-C port (J1).
 
-8. The application starts automatically. Confirm that the onboard user LED (LED3) blinks at 1 Hz with the 10% duty cycle (default) as defined in `PWM_DUTY_CYCLE` in the *main.c* file.
+8. The application starts automatically. Confirm that the onboard user LED (LED3) blinks at 1 Hz with a 10 percent duty cycle (default) as defined in `PWM_DUTY_CYCLE` in the *main.c* file.
 
 9. Vary the duty cycle in percentage of the PWM period by modifying the value of `PWM_DUTY_CYCLE` and observe the difference in LED ON and LED OFF time.
 
+
 ## Debugging
 
-You can debug the example to step through the code. 
+You can debug the example to step through the code.
+
 
 <details><summary><b>In Eclipse IDE</b></summary>
 
-Use the **\<Application Name> Debug (KitProg3_MiniProg4)** configuration in the **Quick Panel**. Ensure that the board is connected to your PC using the USB cable through the KitProg3 USB Type-C port (J1) and for PMG1-CY7110, PMG1-CY7111, PMG1-CY7112, and PMG1-CY7113 prototyping kits the jumper shunt on power selection jumper (J5) is placed at position 1-2.
+Use the **\<Application Name> Debug (KitProg3_MiniProg4)** configuration in the **Quick Panel**. Ensure that the board is connected to your PC using the USB cable through the KitProg3 USB Type-C port (J1) and for PMG1-CY7110, PMG1-CY7111, PMG1-CY7112, PMG1-CY7113, EVAL_PMG1_S1_DRP, and EVAL_PMG1_S3_DUALDRP prototyping kits the jumper shunt on power selection jumper (J5) is placed at position 1-2.
 
-See the **Debug mode** section in the kit user guide for debugging the application on the CY7110 prototyping kit. See the **Debugging using ModusToolbox&trade;** section in [AN238945](https://infineon.com/AN238945) for EVAL_PMG1_B1_DRP kit. For more details, see the **Program and debug** section in the [Eclipse IDE for ModusToolbox&trade; user guide](https://www.infineon.com/MTBEclipseIDEUserGuide).
+See the "Debug mode" section in the kit user guide for debugging the application on the CY7110 prototyping kit. See the "Debugging using ModusToolbox&trade;" section in [AN238945](https://infineon.com/AN238945) for the EVAL_PMG1_B1_DRP kit. For more details, see the "Program and debug" section in the [Eclipse IDE for ModusToolbox&trade; user guide](https://www.infineon.com/MTBEclipseIDEUserGuide).
 
 </details>
 
@@ -258,7 +262,7 @@ See the "Debug mode" section in the kit user guide for debugging the application
 
 ## Design and implementation
 
-The TCPWM block runs a 16-bit counter that can be configured as timer, counter, PWM, or quadrature decoder. In this example, the TCPWM block is configured in PWM mode (left-aligned) to generate a PWM signal of the required duty cycle. The TCPWM peripheral is assigned a clock signal of frequency 1 kHz.
+The TCPWM block runs a 16-bit counter that can be configured as timer, counter, PWM, or quadrature decoder. In this example, the TCPWM block is configured in PWM mode (left-aligned) to generate a PWM signal of the required duty cycle. The TCPWM peripheral is assigned a clock signal with a frequency of 1 kHz.
 
 To generate a PWM signal with time period as 1 second, the required TCPWM period count value can be calculated as follows:
 
@@ -281,7 +285,7 @@ This example uses the following configuration for the TCPWM block:
 **Table 2. TCPWM block settings**
 
    PWM mode           | PWM 
-   :------------------ | :------------------------------------
+   :----------------- | :--------------------
    Clock prescaler    | Divide by 1 
    PWM alignment      | Left aligned
    Run mode           | Continuous 
@@ -313,45 +317,44 @@ The EZ-PD&trade; PMG1 MCU PWM LED application functionality can be customized th
 
 **Table 4. Application resources**
 
- Resource   | Alias/object   | Purpose                              
- :--------  | :------------- | :----------------------------------- 
- TCPWM (PDL)| CYBSP_PWM      | TCPWM block configured as PWM        
- GPIO (PDL) | PWM_OUT        | Output PWM signal from TCPWM block   
- LED (BSP)  | CYBSP_USER_LED | User LED to show the output          
+ Resource    |  Alias/object     |    Purpose
+ :--------   | :-------------    | :------------
+ TCPWM (PDL) | CYBSP_PWM         | TCPWM block configured as PWM        
+ GPIO (PDL)  | PWM_OUT           | Output PWM signal from TCPWM block   
+ LED (BSP)   | CYBSP_USER_LED    | User LED to show the output          
 
 <br>
 
 
-
-
 ## Related resources
 
-Resources | Links
------------|------------------
-Application notes |[AN232553](https://www.infineon.com/AN232553) – Getting started with EZ-PD&trade; PMG1 MCU on ModusToolbox&trade; software <br> [AN232565](https://www.infineon.com/an232565) – EZ-PD&trade; PMG1 hardware design guidelines and checklist <br> [AN238945](https://www.infineon.com/AN238945) – Getting started with EZ-PD&trade; PMG1-B1 MCU using ModusToolbox&trade;
+Resources  | Links
+-----------|----------------------------------
+Application notes  | [AN232553](https://www.infineon.com/AN232553) – Getting started with EZ-PD&trade; PMG1 MCU on ModusToolbox&trade; <br> [AN232565](https://www.infineon.com/an232565) – EZ-PD&trade; PMG1 hardware design guidelines and checklist <br> [AN238945](https://www.infineon.com/AN238945) – Getting started with EZ-PD&trade; PMG1-B1 MCU using ModusToolbox&trade;
 Code examples  | [Using ModusToolbox&trade;](https://github.com/Infineon/Code-Examples-for-ModusToolbox-Software) on GitHub
 Device documentation | [EZ-PD&trade; PMG1 MCU datasheets](https://www.infineon.com/PMG1DS)
-Development kits | Select your kits from the [Evaluation Board Finder](https://www.infineon.com/cms/en/design-support/finder-selection-tools/product-finder/evaluation-board).
+Development kits | Select your kits from the [Evaluation board finder](https://www.infineon.com/cms/en/design-support/finder-selection-tools/product-finder/evaluation-board).
 Libraries on GitHub | [mtb-pdl-cat2](https://github.com/Infineon/mtb-pdl-cat2) – Peripheral Driver Library (PDL)
 Tools  | [ModusToolbox&trade;](https://www.infineon.com/modustoolbox) – ModusToolbox&trade; software is a collection of easy-to-use libraries and tools enabling rapid development with Infineon MCUs for applications ranging from wireless and cloud-connected systems, edge AI/ML, embedded sense and control, to wired USB connectivity using PSoC&trade; Industrial/IoT MCUs, AIROC&trade; Wi-Fi and Bluetooth&reg; connectivity devices, XMC&trade; Industrial MCUs, and EZ-USB&trade;/EZ-PD&trade; wired connectivity controllers. ModusToolbox&trade; incorporates a comprehensive set of BSPs, HAL, libraries, configuration tools, and provides support for industry-standard IDEs to fast-track your embedded application development.
 
 <br>
 
 
-
 ## Other resources
 
 Infineon provides a wealth of data at [www.infineon.com](https://www.infineon.com) to help you select the right device, and quickly and effectively integrate it into your design.
+
 
 ## Document history
 
 Document title: *CE233667* – *EZ-PD&trade; PMG1 MCU: PWM LED*
 
- Version | Description of change 
- ------- | --------------------- 
- 1.0.0   | New code example      
+ Version | Description of change
+ ------- | ---------------------
+ 1.0.0   | New code example
  2.0.0   | Major update to support ModusToolbox&trade; v3.0. This version is not backward compatible with previous versions of ModusToolbox&trade; 
- 2.1.0   | Update to support EVAL_PMG1_B1_DRP kit 
+ 2.1.0   | Updated to support EVAL_PMG1_B1_DRP kit 
+ 2.2.0   | Updated to support EVAL_PMG1_S1_DRP and EVAL_PMG1_S3_DUALDRP kits
 <br>
 
 
